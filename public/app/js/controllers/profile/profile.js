@@ -18,6 +18,7 @@ app.controller('ProfileCtrl', ['$scope', '$http', '$stateParams','GlobalConstant
 		user.addPost($stateParams.id, $scope.currentPost)
 		.then(function(data){
 		    $scope.currentPosts.push(data); 
+            $scope.currentPost = {title:"", content:""};
 		})
     }
   }]);
