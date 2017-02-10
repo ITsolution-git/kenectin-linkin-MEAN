@@ -31,6 +31,20 @@ angular.module('app')
                             ]
                         }
                     })
+
+                    .state('app.findfriend', {
+                        url: '/socialmedia/findfriend',
+                        templateUrl: 'partials/findfriend.html',
+                        resolve: {
+                            deps: ['$ocLazyLoad',
+                                function($ocLazyLoad) {
+                                    return $ocLazyLoad.load([ 
+                                        'js/controllers/vectormap.js',
+                                        'js/controllers/findfriend.js'                                    ]);
+                                }
+                            ]
+                        }
+                    })
                     .state('app.soc-activity', {
                         url: '/socialmedia/activity',
                         templateUrl: 'partials/soc-activity.html',

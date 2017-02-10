@@ -2,13 +2,15 @@ import Promise from 'bluebird';
 import mongoose from 'mongoose';
 import httpStatus from 'http-status';
 import APIError from '../helpers/APIError';
+import User from './user.model';
 
 /**
  * User Schema
  */
 const PostSchema = new mongoose.Schema({
   userId: {
-  	type: mongoose.Schema.ObjectId
+  	type: mongoose.Schema.ObjectId,
+    ref: 'User'
   },
  	title: {
  		type: String, default: ""

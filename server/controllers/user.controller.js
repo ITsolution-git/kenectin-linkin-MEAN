@@ -112,15 +112,37 @@ function update(req, res, next) {
 
 /**
  * Get user list.
- * @property {number} req.query.skip - Number of users to be skipped.
- * @property {number} req.query.limit - Limit number of users to be returned.
+ req.params.query : search string
+ req.params.
  * @returns {User[]}
  */
 function list(req, res, next) {
-  const { limit = 50, skip = 0 } = req.query;
-  User.list({ limit, skip })
-    .then(users => res.json(users))
-    .catch(e => next(e));
+  var params = req.query;
+  var condition;
+  if(params.query == "")
+    condition = {};
+  else{
+    condition = { $or : [{"firstname" : new RegExp(params.query, 'i')},
+                  {"lastname"   : new RegExp(params.query, 'i')}]};
+  }
+  User.count(condition).exec()
+    .then(total => {
+      if(params.page * params.item_per_page < total ){
+        params.users = [];
+        res.json({data:params, result:1})
+      }
+      params.total = total;
+      return User.find(condition)
+        .sort({ createdAt: -1 })
+        .skip(params.page * params.item_per_page)
+        .limit(params.item_per_page)
+        .exec();
+    })
+    .then(users => {
+      params.users = users;
+      res.json({ data : params, result:0}); 
+    })
+    .catch(err => next(err));
 }
 
 /**
@@ -170,5 +192,48 @@ function addPost(req, res, next) {
     .catch(e => next(e));
 }
 
+function followUser(req, res, next) {
+  var user = req.user;
+  User.get(req.body.user_follow_to)
+    .then((user_follow_to) => {
+      if(user.following.indexOf(user_follow_to._id) == -1)
+        user.following.push(user_follow_to._id);
+      user.save()
+        .then(result => {
+          res.json({result:0, data:result});
+        })
+        .catch(e => next(e));
+    })
+    .catch(e => next(e));
+}
 
-export default { load, get, create, update, list, remove, updateBasicinfo, uploadUserimg, getPosts, addPost};
+function disconnectUser(req, res, next) {
+  var user = req.user;
+  User.get(req.body.user_disconnect_to)
+    .then(user_disconnect_to => {
+      var index = user.following.indexOf(user_disconnect_to._id)
+      if(index > -1)
+        user.following.splice(index, 1);
+      user.save()
+        .then(result => {
+          res.json({result:0, data:result});
+        })
+        .catch(e => next(e));
+    })
+    .catch(e => next(e));
+}
+
+
+function myFeeds(req, res, next) {
+  var user = req.user;
+  Post.find({userId : {$in : user.following}})
+    .populate('userId')
+    .exec()
+    .then(feeds => {
+      res.json({data:feeds, result:0});
+    })
+    .catch(e => next(e));
+}
+export default { load, get, create, update, list, remove, 
+  updateBasicinfo, uploadUserimg, getPosts, addPost,
+  followUser, disconnectUser, myFeeds};
