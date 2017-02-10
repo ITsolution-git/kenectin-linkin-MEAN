@@ -36,11 +36,12 @@ angular.module('app')
                         url: '/socialmedia/findfriend',
                         templateUrl: 'partials/findfriend.html',
                         resolve: {
-                            deps: ['$ocLazyLoad',
-                                function($ocLazyLoad) {
-                                    return $ocLazyLoad.load([ 
+                            deps: ['uiLoad',
+                                function(uiLoad) {
+                                    return uiLoad.load(['../bower_components/font-awesome/css/font-awesome.css',
+                                        
                                         'js/controllers/vectormap.js',
-                                        'js/controllers/findfriend.js'                                    ]);
+                                        'js/controllers/findfriend.js']);
                                 }
                             ]
                         }

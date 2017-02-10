@@ -1,0 +1,82 @@
+
+<div class='content-wrapper' ng-init="app.settings.pagetitle = 'DataTables';">
+    <div class="col-lg-12" ng-controller="FindFriendCtrl">
+        <section class="box ">
+            <header class="panel_header">
+                <h2 class="title pull-left">Find Firend</h2>
+                <div class="actions panel_actions pull-right">
+                    <i class="box_toggle material-icons">expand_more</i>
+                    <i class="box_setting material-icons" ng-click="section_modal()">mode_edit</i>
+                    <i class="box_close material-icons">close</i>
+                </div>
+            </header>
+            <div class="content-body padding-bottom-15">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-6 pull-right">
+                        <input id="filter" type="text" class="form-control" placeholder="Search Username" ng-model="pager.query" ng-change="pager.changeQuery()">
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat = "user in currentPagedUsers">
+                                    <td>
+                                        <img class="img-circle img-inline ng-scope" ng-if="user.image==''" ng-src="img/profileimg-placeholder.jpg" alt="" src="img/profileimg-placeholder.jpg" style="max-width:50px;">
+                                        <img class="img-circle img-inline"  ng-if="user.image!=''" ng-src="data:image/jpeg;base64,{{user.image}}"alt="" style="max-width:50px;">
+                                    </td>
+                                    <td>
+                                        {{user.firstname + "   "  + user.lastname}}
+                                    </td>
+
+                                    <td>
+                                        {{user.title}}
+                                    </td>
+                                    <td>
+                                        {{user.description}}
+                                    </td>
+                                    <td >
+                                        <div class="btn" ng-click="currentUser.following.indexOf(user._id)>-1 ? unfollow(user._id) : follow(user._id)" ng-class = "currentUser.following.indexOf(user._id)>-1 ? 'btn-info' : 'btn-success'">         
+                                            {{currentUser.following.indexOf(user._id)>-1 ? "Unfollow" : "Follow"}}
+                                            <span ng-if="loadingFollow">
+                                                <i class="fa fa-spinner fa-spin  fa-fw"></i>
+                                            </span>
+                                        </div>
+                                        
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="hide-if-no-paging">
+                                <tr>
+                                    <td colspan="5" class="text-center footable-visible">
+                                        <ul class="pagination">
+                                           <!--  <li class="footable-page-arrow disabled">
+                                                <a data-page="first" href="#first">«</a>
+                                            </li> -->
+                                            <li class="footable-page-arrow" ng-class="pager.page==0?'disabled':''" ng-click="pager.previousPage()">
+                                                <a data-page="prev">‹</a>
+                                            </li>
+                                            <li ng-repeat = "p in pager.page_array" class="footable-page" ng-class = "pager.page + 1 == p ? 'active':''"  ng-click="pager.showPage(p-1)">
+                                                <a data-page="0">{{p}}</a>
+                                            </li>
+                                            <li class="footable-page-arrow"  ng-class="pager.page==this.total/this.item_per_page ? 'disabled' : ''" >
+                                                <a data-page="next"  ng-click="pager.nextPage()">›</a>
+                                            </li>
+                                            <!-- <li class="footable-page-arrow"><a data-page="last" href="#last">»</a></li></ul> -->
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+    </div>
+</div>

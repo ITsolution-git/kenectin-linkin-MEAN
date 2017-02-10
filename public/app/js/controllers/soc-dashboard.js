@@ -4,7 +4,7 @@ app.controller('DashboardCtrl', ['$scope', '$http', 'auth', '$state', 'user',
     //   $scope.medias = data;
 
     // });
-
+    $scope.myFeeds = [];
     user.getUser(auth.getId())
     .then(function(data){
         $scope.user = data; 
@@ -14,4 +14,9 @@ app.controller('DashboardCtrl', ['$scope', '$http', 'auth', '$state', 'user',
     });
     if(!auth.isAuthenticated())
     	$state.go('access.login');
-  }]);
+    
+    user.getFeed(auth.getId())
+    .then(function(data){
+        $scope.myFeeds = data;
+    })  
+}]);

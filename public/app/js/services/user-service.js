@@ -47,6 +47,59 @@ app.service('user', ['$http', '$window','GlobalConstants', 'auth', '$q', functio
                 }
             })
     };
+
+    service.pagedUsers = function(user, pager) {
+        return $http.get(GlobalConstants.APIBASEPATH + 'api/user/'  , {
+            params:{
+                page : pager.page,
+                item_per_page : pager.item_per_page,
+                query: pager.query
+            }
+        })
+            .then(function(response) {
+                if (response.data.result === 0) {
+                    return response.data.data;
+                } else {
+                    throw response.data;
+                }
+            })
+    };
+
+    service.follow = function(who, whom) {
+        return $http.post(GlobalConstants.APIBASEPATH + 'api/user/' + who + '/follow', {
+            user_follow_to : whom,
+        })
+        .then(function(response) {
+            if (response.data.result === 0) {
+                return response.data.data;
+            } else {
+                throw response.data;
+            }
+        })
+    };
+    service.unfollow = function(who, whom) {
+        return $http.post(GlobalConstants.APIBASEPATH + 'api/user/' + who + '/disconnect', {
+            user_disconnect_to : whom,
+        })
+        .then(function(response) {
+            if (response.data.result === 0) {
+                return response.data.data;
+            } else {
+                throw response.data;
+            }
+        })
+    };
+
+    service.getFeed = function(id) {
+        return $http.get(GlobalConstants.APIBASEPATH + 'api/user/' + id + '/feeds')
+        .then(function(response) {
+            if (response.data.result === 0) {
+                return response.data.data;
+            } else {
+                throw response.data;
+            }
+        })
+    };
     service.setUserinfo = function(data){
         service.user =  data;
     }

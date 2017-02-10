@@ -19,6 +19,7 @@ function load(req, res, next, id) {
  */
 function get(req, res) {
   req.user.password = "";
+  
   return res.json({data:req.user, result:0});
 }
 
@@ -125,17 +126,18 @@ function list(req, res, next) {
     condition = { $or : [{"firstname" : new RegExp(params.query, 'i')},
                   {"lastname"   : new RegExp(params.query, 'i')}]};
   }
+  console.log(params);
   User.count(condition).exec()
     .then(total => {
-      if(params.page * params.item_per_page < total ){
+      if(params.page * params.item_per_page > total ){
         params.users = [];
-        res.json({data:params, result:1})
+        throw {data:params, result:1};
       }
       params.total = total;
       return User.find(condition)
         .sort({ createdAt: -1 })
         .skip(params.page * params.item_per_page)
-        .limit(params.item_per_page)
+        .limit(params.item_per_page)  
         .exec();
     })
     .then(users => {
@@ -234,6 +236,19 @@ function myFeeds(req, res, next) {
     })
     .catch(e => next(e));
 }
+
+
+// function allUsers(req, res, next) {
+//   var user = req.user;
+//   User.find()
+//     .sort({ createdAt: -1 })
+//     .exec()
+//     .then(users => {
+//       res.json(users)
+//     })
+//     .catch(e => next(e));
+// }
+
 export default { load, get, create, update, list, remove, 
   updateBasicinfo, uploadUserimg, getPosts, addPost,
   followUser, disconnectUser, myFeeds};
