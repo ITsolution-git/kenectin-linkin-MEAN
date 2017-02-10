@@ -137,7 +137,7 @@ function list(req, res, next) {
       return User.find(condition)
         .sort({ createdAt: -1 })
         .skip(params.page * params.item_per_page)
-        .limit(params.item_per_page)  
+        .limit(parseInt(params.item_per_page))  
         .exec();
     })
     .then(users => {
