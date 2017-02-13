@@ -23,4 +23,25 @@ app.controller('ProfileCtrl', ['$scope', '$http', '$stateParams','GlobalConstant
             $scope.currentPost = {title:"", content:""};
 		})
     }
+    $scope.loadingFollow = false;
+
+    $scope.follow = function(whom){
+        $scope.loadingFollow = true;
+
+        user.follow($scope.user._id, whom)
+        .then(function(data){
+            $scope.user.following = data.following;
+            $scope.loadingFollow = false;
+        })
+    };
+
+    $scope.unfollow = function(whom){        
+        $scope.loadingFollow = true;
+
+        user.unfollow($scope.user._id, whom)
+        .then(function(data){
+            $scope.user.following = data.following;
+            $scope.loadingFollow = false;
+        })
+    }
   }]);

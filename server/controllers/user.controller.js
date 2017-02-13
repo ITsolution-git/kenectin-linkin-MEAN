@@ -19,8 +19,19 @@ function load(req, res, next, id) {
  */
 function get(req, res) {
   req.user.password = "";
-  
-  return res.json({data:req.user, result:0});
+  var user = JSON.parse(JSON.stringify(req.user));
+  Post.count({userId:req.user._id}).exec()
+  .then(postCount => {
+    user.postCount = postCount;
+    User.count({following :  req.user._id}).exec()
+    .then(followedByCount => {
+      user.followedByCount = followedByCount;
+      return res.json({data:user, result:0});
+    })  
+  })
+  .catch(err => {
+    return res.json({data:err, result:1});
+  })
 }
 
 

@@ -36,8 +36,16 @@ function load(req, res, next, id) {
  */
 function get(req, res) {
   req.user.password = "";
-
-  return res.json({ data: req.user, result: 0 });
+  var user = JSON.parse(JSON.stringify(req.user));
+  _post2.default.count({ userId: req.user._id }).exec().then(function (postCount) {
+    user.postCount = postCount;
+    _user2.default.count({ following: req.user._id }).exec().then(function (followedByCount) {
+      user.followedByCount = followedByCount;
+      return res.json({ data: user, result: 0 });
+    });
+  }).catch(function (err) {
+    return res.json({ data: err, result: 1 });
+  });
 }
 
 /**

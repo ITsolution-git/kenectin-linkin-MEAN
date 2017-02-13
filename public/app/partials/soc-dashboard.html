@@ -113,7 +113,9 @@ Feed';  " ng-controller="DashboardCtrl">
                             <span class="bold">John Smith</span> post in group <span class="bold">music</span>
                         </div> -->
                         <div class="username">
-                            <span class="bold">{{post.title}}</span> posted by <span  class="bold">{{post.userId.firstname + "  " + post.userId.lastname}}</span>
+                        
+                            <span class="bold">{{post.title}}</span> posted by <span  class="bold"><a ui-sref="app.soc-profile({id:post.userId._id})" style="text-decoration: none">{{post.userId.firstname + "  " + post.userId.lastname}}</a></span>
+
                         </div>
                         <div class="info text-muted">
                             {{post.content}}

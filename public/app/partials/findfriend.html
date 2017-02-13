@@ -28,8 +28,11 @@
                             <tbody>
                                 <tr ng-repeat = "user in currentPagedUsers">
                                     <td>
+
+                                    <a ui-sref="app.soc-profile({id:user._id})">
                                         <img class="img-circle img-inline ng-scope" ng-if="user.image==''" ng-src="img/profileimg-placeholder.jpg" alt="" src="img/profileimg-placeholder.jpg" style="max-width:50px;">
                                         <img class="img-circle img-inline"  ng-if="user.image!=''" ng-src="data:image/jpeg;base64,{{user.image}}"alt="" style="max-width:50px;">
+                                    </a>
                                     </td>
                                     <td>
                                         {{user.firstname + "   "  + user.lastname}}
@@ -42,7 +45,7 @@
                                         {{user.description}}
                                     </td>
                                     <td >
-                                        <div class="btn" ng-click="currentUser.following.indexOf(user._id)>-1 ? unfollow(user._id) : follow(user._id)" ng-class = "currentUser.following.indexOf(user._id)>-1 ? 'btn-info' : 'btn-success'">         
+                                        <div class="btn" ng-click="currentUser.following.indexOf(user._id)>-1 ? unfollow(user._id) : follow(user._id)" ng-class = "currentUser.following.indexOf(user._id)>-1 ? 'btn-info' : 'btn-success'" ng-if="currentUser._id!=user._id">         
                                             {{currentUser.following.indexOf(user._id)>-1 ? "Unfollow" : "Follow"}}
                                             <span ng-if="loadingFollow">
                                                 <i class="fa fa-spinner fa-spin  fa-fw"></i>
