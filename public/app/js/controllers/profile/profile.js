@@ -7,7 +7,9 @@ app.controller('ProfileCtrl', ['$scope', '$http', '$stateParams','GlobalConstant
     $scope.canPost = (auth.getId() == $stateParams.id);
     user.getUser($stateParams.id)
     .then(function(data){
-        $scope.currentUser = data; 
+        for(var key in data) {
+            $scope.currentUser[key] = data[key];
+        }
     })
     user.getPosts($stateParams.id)
     .then(function(data){

@@ -102,9 +102,11 @@ Feed';  " ng-controller="DashboardCtrl">
                 <div class="row">
                 <div class="uprofile_wall_posts col-md-12 col-sm-12 col-xs-12" ng-repeat = "post in myFeeds">
                     <div class="pic-wrapper col-md-1 col-sm-1 col-xs-2 text-center">
-                        
+  
+                    <a ui-sref="app.soc-profile({id:post.userId._id})">
                         <img class="img-circle img-inline ng-scope" ng-if="post.userId.image==''" ng-src="img/profileimg-placeholder.jpg" alt="" src="img/profileimg-placeholder.jpg" >
                         <img class="img-circle img-inline"  ng-if="post.userId.image!=''" ng-src="data:image/jpeg;base64,{{post.userId.image}}" alt="">
+                    </a>
                     </div>
                     <div class="info-wrapper col-md-11 col-sm-11 col-xs-10">
                         <!-- <div class="username">

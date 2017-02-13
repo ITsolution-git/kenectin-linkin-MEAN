@@ -149,7 +149,7 @@ function list(req, res, next) {
       throw { data: params, result: 1 };
     }
     params.total = total;
-    return _user2.default.find(condition).sort({ createdAt: -1 }).skip(params.page * params.item_per_page).limit(params.item_per_page).exec();
+    return _user2.default.find(condition).sort({ createdAt: -1 }).skip(params.page * params.item_per_page).limit(parseInt(params.item_per_page)).exec();
   }).then(function (users) {
     params.users = users;
     res.json({ data: params, result: 0 });
