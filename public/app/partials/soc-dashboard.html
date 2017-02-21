@@ -105,7 +105,7 @@ Feed';  " ng-controller="DashboardCtrl">
   
                     <a ui-sref="app.soc-profile({id:post.userId._id})">
                         <img class="img-circle img-inline ng-scope" ng-if="post.userId.image==''" ng-src="img/profileimg-placeholder.jpg" alt="" src="img/profileimg-placeholder.jpg" >
-                        <img class="img-circle img-inline"  ng-if="post.userId.image!=''" ng-src="data:image/jpeg;base64,{{post.userId.image}}" alt="">
+                        <img class="img-circle img-inline"  ng-if="post.userId.image!=''" ng-src="{{post.userId.image}}" alt="">
                     </a>
                     </div>
                     <div class="info-wrapper col-md-11 col-sm-11 col-xs-10">
@@ -114,7 +114,7 @@ Feed';  " ng-controller="DashboardCtrl">
                         </div> -->
                         <div class="username">
                         
-                            <span class="bold">{{post.title}}</span> posted by <span  class="bold"><a ui-sref="app.soc-profile({id:post.userId._id})" style="text-decoration: none">{{post.userId.firstname + "  " + post.userId.lastname}}</a></span>
+                            <span class="bold">{{post.title}}</span> posted by <span></span> <a ui-sref="app.soc-profile({id:post.userId._id})" style="text-decoration: none">{{post.userId.firstname + "  " + post.userId.lastname}}</a></span>
 
                         </div>
                         <div class="info text-muted">
@@ -125,10 +125,51 @@ Feed';  " ng-controller="DashboardCtrl">
                                 <li><a href="#" class="text-muted">{{post.createdAt | date}}</a></li>
                                 <li><a href="#" class="text-muted"><i class="fa fa-comment"></i> 584</a></li>
                                 <li><a href="#" class="text-muted"><i class="fa fa-heart"></i> 12k</a></li>
-                                <li><a href="#" class="text-muted"><i class="fa fa-reply"></i> Reply</a></li>
+                                <li><a href="#" class="text-muted" ng-click="showReply(post._id)"><i class="fa fa-reply"></i> Reply</a></li>
                             </ul>
                         </div>
+                        <div class="enter_post col-md-12 col-sm-12 col-xs-12" ng-if="showReplyBoxon==post._id">
+                            <h4>Write Comments:</h4><br><div class="clearfix"></div>
+                            <div class="form-group">
+                                <!-- <div class="controls">
+                                    <input type="text"  class="form-control" id="field-1" ng-model="currentComment.title" placeholder="Title">
+                                </div>
+                                <br><div class="clearfix"></div><br> -->
+                                <div class="controls">
+                                    <textarea class="form-control autogrow" id="field-7" ng-model="currentComment.content"></textarea>
+                                </div>
+                            </div>
+                            <div class="enter_post_btns col-md-12 col-sm-12 col-xs-12">
+                                <a class="btn btn-md pull-right btn-primary" ng-click="addComment()">Add Comment</a>
+                                <a href="#" class="btn btn-md pull-right btn-link"><i class="fa fa-image"></i></a>
+                                <a href="#" class="btn btn-md pull-right btn-link"><i class="fa fa-map-marker"></i></a>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
 
+                        <div class="comment" ng-repeat="comment in post.comments">
+                            <div class="pic-wrapper col-md-1 col-sm-1 col-xs-2 text-center">
+                                <img class="img-circle img-inline ng-scope" ng-if="comment.author.image==''" ng-src="img/profileimg-placeholder.jpg" alt="" src="img/profileimg-placeholder.jpg" >
+                                <img class="img-circle img-inline"  ng-if="comment.author.image!=''" ng-src="{{comment.author.image}}" alt="">
+                            </div>
+                            <div class="info-wrapper col-md-11 col-sm-11 col-xs-10">
+                                <div class="username">
+                                    <span class="bold">{{comment.author.firstname+"  "+comment.author.lastname}}</span>
+                                </div>
+                                <div class="info text-muted">
+                                    {{comment.content}}
+                                </div>
+                                <div class="info-details">
+                                    <ul class="list-unstyled list-inline">
+                                        <li><a href="#" class="text-muted">{{comment.createdAt | date}}</a></li>
+                                        <!-- <li><a href="#" class="text-muted"><i class="fa fa-heart-o"></i> Like</a></li>
+                                        <li><a href="#" class="text-muted">More</a></li> -->
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        </div>
                     </div>
                 </div>
                 </div>

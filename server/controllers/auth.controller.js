@@ -15,32 +15,42 @@ const config = require('../../config/env');
  */
 function login(req, res, next) {
   console.log(req.body);
-  User.find({'email':req.body.email})
-    .then(users=>{
-      if(users.length == 1){
-        let user = users[0];
-        if(user.password == req.body.password)
-        {
-          const token = jwt.sign({
-              username: user.username,
-              email: user.email
-          }, config.jwtSecret,  {
-            expiresIn : 60*60*24*30
-          });
-          res.json({data:{
-                        userinfo:{_id:user._id},
-                        token:token}
-                  , result:0});
-        }
-        else{
-          res.json({data:"Wrong password", result:1});
-        }
-      }
-      else{
-        return res.json({data:"No Email address", result:1});
-      }
-    })
-    .catch(err=>next(err));
+    User.find({
+            'email': req.body.email
+        })
+        .then(users => {
+            if (users.length == 1) {
+                let user = users[0];
+                if (user.password == req.body.password) {
+                    const token = jwt.sign({
+                        username: user.username,
+                        email: user.email
+                    }, config.jwtSecret, {
+                        expiresIn: 60 * 60 * 24 * 30
+                    });
+                    res.json({
+                        data: {
+                            userinfo: {
+                                _id: user._id
+                            },
+                            token: token
+                        },
+                        result: 0
+                    });
+                } else {
+                    res.json({
+                        data: "Wrong password",
+                        result: 1
+                    });
+                }
+            } else {
+                return res.json({
+                    data: "No Email address",
+                    result: 1
+                });
+            }
+        })
+        .catch(err => next(err));
 }
 
 /**

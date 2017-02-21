@@ -121,7 +121,7 @@
             <li class="dropdown profile tab" uib-dropdown>
                 <a href class="dropdown-toggle toggle" uib-dropdown-toggle>
 
-                    <img class="img-circle img-inline"  ng-if="user.image!=''" ng-src="data:image/jpeg;base64,{{user.image}}"alt="" style="max-width:200px;">
+                    <img class="img-circle img-inline"  ng-if="user.image!=''" ng-src="{{user.image}}"alt="" style="max-width:200px;">
                     <img class="img-circle img-inline"  ng-if="user.image==''" ng-src="img/profileimg-placeholder.jpg" alt="" style="max-width:200px;">
 
                     <span class="profile-status available"></span>

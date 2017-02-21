@@ -12,6 +12,19 @@ app.service('user', ['$http', '$window','GlobalConstants', 'auth', '$q', functio
             });
     };
 
+    service.addComment = function(comment) {
+        return $http.post(GlobalConstants.APIBASEPATH + 'api/post/' + auth.getId() + '/saveComment', {
+            post_id: comment.post_id,
+            content: comment.content
+        })
+            .then(function(response) {
+                if (response.data.result === 0) {
+                    return response.data.data;
+                } else {
+                    throw response.data;
+                }
+            });
+    };
     service.getPosts = function(id) {
         return $http.get(GlobalConstants.APIBASEPATH + 'api/user/' + id + '/getPosts')
             .then(function(response) {

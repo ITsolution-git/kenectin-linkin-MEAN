@@ -3,12 +3,13 @@ import mongoose from 'mongoose';
 import httpStatus from 'http-status';
 import APIError from '../helpers/APIError';
 import User from './user.model';
+import Comment from './comment.model';
 
 /**
  * User Schema
  */
 const PostSchema = new mongoose.Schema({
-  userId: {
+  userId: { 
   	type: mongoose.Schema.ObjectId,
     ref: 'User'
   },
@@ -18,9 +19,9 @@ const PostSchema = new mongoose.Schema({
  	content: {
  		type: String, default: ""
  	},
-
+  comments:  [{ type : mongoose.Schema.ObjectId, ref: 'Comment' }],
   createdAt: {
-    type: Date,
+    type: Date, 
     default: Date.now
   }
 });
@@ -54,7 +55,7 @@ PostSchema.statics = {
         if (user) {
           return user;
         }
-        const err = new APIError('No such user exists!', httpStatus.NOT_FOUND);
+        const err = new APIError('No such post exists!', httpStatus.NOT_FOUND);
         return Promise.reject(err);
       });
   },

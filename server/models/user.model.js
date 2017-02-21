@@ -71,7 +71,7 @@ UserSchema.statics = {
    * @returns {Promise<User, APIError>}
    */
   get(id) {
-    return this.findById(id)
+    return this.findById(id)  
       .exec()
       .then((user) => {
         if (user) {

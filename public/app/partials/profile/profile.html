@@ -6,7 +6,7 @@
                     <div class="col-md-3 col-sm-4 col-xs-12 padding-right-0">
                         <div class=" uprofile-wrapper">
                             <div class="uprofile-image">
-                                <img class="img-responsive"  ng-if="currentUser.image!=''" ng-src="data:image/jpeg;base64,{{currentUser.image}}" alt="" style="max-width:200px;">
+                                <img class="img-responsive"  ng-if="currentUser.image!=''" ng-src="{{currentUser.image}}" alt="" style="max-width:200px;">
                                 <img class="img-responsive"  ng-if="currentUser.image==''" ng-src="img/profileimg-placeholder.jpg" alt="" style="max-width:200px;">
                             </div>
                             <div class="uprofile-name">

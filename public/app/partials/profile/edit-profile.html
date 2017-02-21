@@ -48,7 +48,7 @@
                         <div class="form-group">
                             <label class="form-label" for="field-1">Profile Image</label>
                             <span class="desc"></span>
-                            <img class="img-responsive"  ng-if="user.image!=''" ng-src="data:image/jpeg;base64,{{user.image}}"alt="" style="max-width:200px;">
+                            <img class="img-responsive"  ng-if="user.image!=''" ng-src="{{user.image}}" alt="" style="max-width:200px;">
                             <img class="img-responsive"  ng-if="user.image==''" ng-src="img/profileimg-placeholder.jpg" alt="" style="max-width:200px;">
                             <!-- ng-src="data/soc-members/member-1.jpg" -->
                             <br/>

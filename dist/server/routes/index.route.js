@@ -16,6 +16,10 @@ var _auth = require('./auth.route');
 
 var _auth2 = _interopRequireDefault(_auth);
 
+var _post = require('./post.route');
+
+var _post2 = _interopRequireDefault(_post);
+
 var _jsonwebtoken = require('jsonwebtoken');
 
 var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
@@ -32,6 +36,12 @@ var router = _express2.default.Router(); // eslint-disable-line new-cap
 
 // mount auth routes at /auth
 router.use('/auth', _auth2.default);
+
+/** GET /health-check - Check service health */
+router.get('/health-check', function (req, res) {
+  return res.send('OK');
+});
+
 router.use('*', function (req, res, next) {
 
   // check header or url parameters or post parameters for token
@@ -61,12 +71,8 @@ router.use('*', function (req, res, next) {
   }
 });
 
-/** GET /health-check - Check service health */
-router.get('/health-check', function (req, res) {
-  return res.send('OK');
-});
-
 // mount user routes at /users
+router.use('/post', _post2.default);
 router.use('/user', _user2.default);
 exports.default = router;
 module.exports = exports['default'];

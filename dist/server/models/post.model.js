@@ -24,6 +24,10 @@ var _user = require('./user.model');
 
 var _user2 = _interopRequireDefault(_user);
 
+var _comment = require('./comment.model');
+
+var _comment2 = _interopRequireDefault(_comment);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
@@ -40,7 +44,7 @@ var PostSchema = new _mongoose2.default.Schema({
   content: {
     type: String, default: ""
   },
-
+  comments: [{ type: _mongoose2.default.Schema.ObjectId, ref: 'Comment' }],
   createdAt: {
     type: Date,
     default: Date.now
@@ -73,7 +77,7 @@ PostSchema.statics = {
       if (user) {
         return user;
       }
-      var err = new _APIError2.default('No such user exists!', _httpStatus2.default.NOT_FOUND);
+      var err = new _APIError2.default('No such post exists!', _httpStatus2.default.NOT_FOUND);
       return _bluebird2.default.reject(err);
     });
   },

@@ -31,7 +31,7 @@
 
                                     <a ui-sref="app.soc-profile({id:user._id})">
                                         <img class="img-circle img-inline ng-scope" ng-if="user.image==''" ng-src="img/profileimg-placeholder.jpg" alt="" src="img/profileimg-placeholder.jpg" style="max-width:50px;">
-                                        <img class="img-circle img-inline"  ng-if="user.image!=''" ng-src="data:image/jpeg;base64,{{user.image}}"alt="" style="max-width:50px;">
+                                        <img class="img-circle img-inline"  ng-if="user.image!=''" ng-src="{{user.image}}"alt="" style="max-width:50px;">
                                     </a>
                                     </td>
                                     <td>

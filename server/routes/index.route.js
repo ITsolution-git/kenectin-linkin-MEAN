@@ -1,6 +1,7 @@
 import express from 'express';
 import userRoutes from './user.route';
 import authRoutes from './auth.route';
+import postRoutes from './post.route';
 import jwt from 'jsonwebtoken';
 import httpStatus from 'http-status';
 
@@ -10,6 +11,12 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 // mount auth routes at /auth
 router.use('/auth', authRoutes);
+
+/** GET /health-check - Check service health */
+router.get('/health-check', (req, res) =>
+  res.send('OK')
+);
+
 router.use('*', function(req, res, next){
 
   // check header or url parameters or post parameters for token
@@ -40,11 +47,7 @@ router.use('*', function(req, res, next){
   }
 });
 
-/** GET /health-check - Check service health */
-router.get('/health-check', (req, res) =>
-  res.send('OK')
-);
-
 // mount user routes at /users
+router.use('/post', postRoutes);
 router.use('/user', userRoutes);
 export default router;
