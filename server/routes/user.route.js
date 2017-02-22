@@ -35,6 +35,10 @@ router.route('/:userId/disconnect')
   .post(userCtrl.disconnectUser)
 router.route('/:userId/feeds')
   .get(userCtrl.myFeeds)
+router.route('/likePost')
+  .post(userCtrl.likePost)
+router.route('/dislikePost')
+  .post(userCtrl.dislikePost)
 /** Load user when API with userId route parameter is hit */
 router.param('userId', userCtrl.load);
 

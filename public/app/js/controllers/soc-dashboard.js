@@ -39,4 +39,25 @@ app.controller('DashboardCtrl', ['$scope', '$http', 'auth', '$state', 'user',
     }
 
 
+    $scope.likePost = function(post_id){
+        user.likePost(post_id)
+        .then(function(data){
+            for (var i = 0; i < $scope.myFeeds.length; i++) {
+                if($scope.myFeeds[i]._id == post_id){
+                    $scope.myFeeds[i].likeUsers.push($scope.user._id);
+                }
+            }
+        })  
+    }
+
+    $scope.dislikePost = function(post_id){
+        user.dislikePost(post_id)
+        .then(function(data){
+            for (var i = 0; i < $scope.myFeeds.length; i++) {
+                if($scope.myFeeds[i]._id == post_id){
+                    $scope.myFeeds[i].likeUsers.splice($scope.myFeeds[i].likeUsers.indexOf($scope.user._id), 1);
+                }
+            }
+        })  
+    }
 }]);

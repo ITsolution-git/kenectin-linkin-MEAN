@@ -25,6 +25,7 @@ angular.module('app')
                             deps: ['$ocLazyLoad',
                                 function($ocLazyLoad) {
                                     return $ocLazyLoad.load([ 
+                                        '../bower_components/font-awesome/css/font-awesome.css',
                                         'js/controllers/vectormap.js',
                                         'js/controllers/soc-dashboard.js'                                    ]);
                                 }

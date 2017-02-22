@@ -47,6 +47,8 @@ router.route('/:userId/addPost').post(_user2.default.addPost);
 router.route('/:userId/follow').post(_user2.default.followUser);
 router.route('/:userId/disconnect').post(_user2.default.disconnectUser);
 router.route('/:userId/feeds').get(_user2.default.myFeeds);
+router.route('/likePost').post(_user2.default.likePost);
+router.route('/dislikePost').post(_user2.default.dislikePost);
 /** Load user when API with userId route parameter is hit */
 router.param('userId', _user2.default.load);
 

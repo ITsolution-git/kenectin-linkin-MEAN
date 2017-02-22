@@ -45,6 +45,7 @@ var PostSchema = new _mongoose2.default.Schema({
     type: String, default: ""
   },
   comments: [{ type: _mongoose2.default.Schema.ObjectId, ref: 'Comment' }],
+  likeUsers: [{ type: _mongoose2.default.Schema.ObjectId, ref: 'User' }],
   createdAt: {
     type: Date,
     default: Date.now

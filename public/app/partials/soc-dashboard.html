@@ -123,8 +123,8 @@ Feed';  " ng-controller="DashboardCtrl">
                         <div class="info-details">
                             <ul class="list-unstyled list-inline">
                                 <li><a href="#" class="text-muted">{{post.createdAt | date}}</a></li>
-                                <li><a href="#" class="text-muted"><i class="fa fa-comment"></i> 584</a></li>
-                                <li><a href="#" class="text-muted"><i class="fa fa-heart"></i> 12k</a></li>
+                                <li><a href="#" class="text-muted"><i class="fa fa-comment"></i> {{post.comments.length}}</a></li>
+                                <li><a href="#" class="text-muted"  ng-click="post.likeUsers.indexOf(user._id) == -1 ? likePost(post._id) : dislikePost(post._id)"><i class="fa fa-chain" style="{{post.likeUsers.indexOf(user._id) != -1 ? 'color:#FF6E40' : '';}}"></i>{{post.likeUsers.length}} </a></li>
                                 <li><a href="#" class="text-muted" ng-click="showReply(post._id)"><i class="fa fa-reply"></i> Reply</a></li>
                             </ul>
                         </div>

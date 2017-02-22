@@ -12,6 +12,10 @@ var _post = require('../models/post.model');
 
 var _post2 = _interopRequireDefault(_post);
 
+var _users_posts = require('../models/users_posts.model');
+
+var _users_posts2 = _interopRequireDefault(_users_posts);
+
 var _fs = require('fs');
 
 var _fs2 = _interopRequireDefault(_fs);
@@ -180,7 +184,6 @@ function list(req, res, next) {
 			}]
 		};
 	}
-	console.log(params);
 	_user2.default.count(condition).exec().then(function (total) {
 		if (params.page * params.item_per_page > total) {
 			params.users = [];
@@ -307,7 +310,9 @@ function myFeeds(req, res, next) {
 		populate: {
 			path: 'author'
 		}
-	}).exec().then(function (feeds) {
+	})
+	// .populate('likeUsers')
+	.exec().then(function (feeds) {
 		res.json({
 			data: feeds,
 			result: 0
@@ -327,6 +332,89 @@ function myFeeds(req, res, next) {
 //     })
 //     .catch(e => next(e));
 // }
+//----------------------Like system----------------
+
+function likePost(req, res, next) {
+	// UserPost.find({
+	// 	user: req.current_user,
+	// 	post: req.body.post_id
+	// })
+	// .exec()
+	// .then(userpost => {
+	// 	if(userpost.length == 0){
+	// 		new UserPost({
+	// 			user: req.current_user,
+	// 			post: req.body.post_id
+	// 		}).save().then((userpost)=>{
+	// 			res.json({
+	// 				result:0,
+	// 				data:userpost
+	// 			});
+	// 		})
+	// 	}
+	// 	else
+	// 	{
+	// 		res.json({
+	// 			result:0,
+	// 			data:"You already like it"
+	// 		})
+	// 	}
+	// })
+	// .catch(e => {
+	// 	res.json({
+	// 		result: 1,
+	// 		data: e
+	// 	})
+	// });
+
+	_post2.default.get(req.body.post_id).then(function (post) {
+		if (post.likeUsers.indexOf(req.current_user._id) == -1) post.likeUsers.push(req.current_user._id);
+		post.save().then(function (result) {
+			res.json({
+				result: 0,
+				data: result
+			});
+		}).catch(function (e) {
+			return next(e);
+		});
+	}).catch(function (e) {
+		return next(e);
+	});
+}
+
+function dislikePost(req, res, next) {
+	// UserPost.remove({
+	// 	user: req.current_user,
+	// 	post: req.body.post_id
+	// })
+	// .exec()
+	// .then(userpost => {
+	// 	res.json({
+	// 		result:0,
+	// 		data:userpost
+	// 	})
+	// })
+	// .catch(e => {
+	// 	res.json({
+	// 		result: 1,
+	// 		data: e.message
+	// 	})
+	// });
+
+	_post2.default.get(req.body.post_id).then(function (post) {
+		if (post.likeUsers.indexOf(req.current_user._id) != -1) post.likeUsers.splice(post.likeUsers.indexOf(req.current_user._id), 1);
+		post.save().then(function (result) {
+			res.json({
+				result: 0,
+				data: result
+			});
+		}).catch(function (e) {
+			return next(e);
+		});
+	}).catch(function (e) {
+		return next(e);
+	});
+}
 
 exports.default = {
 	load: load,
@@ -341,7 +429,9 @@ exports.default = {
 	addPost: addPost,
 	followUser: followUser,
 	disconnectUser: disconnectUser,
-	myFeeds: myFeeds
+	myFeeds: myFeeds,
+	likePost: likePost,
+	dislikePost: dislikePost
 };
 module.exports = exports['default'];
 //# sourceMappingURL=user.controller.js.map

@@ -1,5 +1,6 @@
 import User from '../models/user.model';
 import Post from '../models/post.model';
+import UserPost from '../models/users_posts.model';
 import fs from 'fs';
 import path from 'path';
 /**
@@ -162,7 +163,6 @@ function list(req, res, next) {
 			}]
 		};
 	}
-	console.log(params);
 	User.count(condition).exec()
 		.then(total => {
 			if (params.page * params.item_per_page > total) {
@@ -301,6 +301,7 @@ function myFeeds(req, res, next) {
 				path: 'author'
 			}
 		})
+		// .populate('likeUsers')
 		.exec()
 		.then(feeds => {
 			res.json({
@@ -322,6 +323,92 @@ function myFeeds(req, res, next) {
 //     })
 //     .catch(e => next(e));
 // }
+//----------------------Like system----------------
+
+function likePost(req, res, next) {
+	// UserPost.find({
+	// 	user: req.current_user,
+	// 	post: req.body.post_id
+	// })
+	// .exec()
+	// .then(userpost => {
+	// 	if(userpost.length == 0){
+	// 		new UserPost({
+	// 			user: req.current_user,
+	// 			post: req.body.post_id
+	// 		}).save().then((userpost)=>{
+	// 			res.json({
+	// 				result:0,
+	// 				data:userpost
+	// 			});
+	// 		})
+	// 	}
+	// 	else
+	// 	{
+	// 		res.json({
+	// 			result:0,
+	// 			data:"You already like it"
+	// 		})
+	// 	}
+	// })
+	// .catch(e => {
+	// 	res.json({
+	// 		result: 1,
+	// 		data: e
+	// 	})
+	// });
+
+	Post.get(req.body.post_id)
+		.then((post) => {
+			if (post.likeUsers.indexOf(req.current_user._id) == -1)
+				post.likeUsers.push(req.current_user._id);
+			post.save()
+				.then(result => {
+					res.json({
+						result: 0,
+						data: result
+					});
+				})
+				.catch(e => next(e));
+		})
+		.catch(e => next(e));
+}
+
+
+function dislikePost(req, res, next) {
+	// UserPost.remove({
+	// 	user: req.current_user,
+	// 	post: req.body.post_id
+	// })
+	// .exec()
+	// .then(userpost => {
+	// 	res.json({
+	// 		result:0,
+	// 		data:userpost
+	// 	})
+	// })
+	// .catch(e => {
+	// 	res.json({
+	// 		result: 1,
+	// 		data: e.message
+	// 	})
+	// });
+
+	Post.get(req.body.post_id)
+		.then((post) => {
+			if (post.likeUsers.indexOf(req.current_user._id) != -1)
+				post.likeUsers.splice(post.likeUsers.indexOf(req.current_user._id), 1);
+			post.save()
+				.then(result => {
+					res.json({
+						result: 0,
+						data: result
+					});
+				})
+				.catch(e => next(e));
+		})
+		.catch(e => next(e));
+}
 
 export default {
 	load,
@@ -336,5 +423,7 @@ export default {
 	addPost,
 	followUser,
 	disconnectUser,
-	myFeeds
+	myFeeds,
+	likePost,
+	dislikePost
 };

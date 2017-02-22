@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _express = require('express');
@@ -28,6 +28,10 @@ var _httpStatus = require('http-status');
 
 var _httpStatus2 = _interopRequireDefault(_httpStatus);
 
+var _user3 = require('../models/user.model');
+
+var _user4 = _interopRequireDefault(_user3);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var config = require('../../config/env');
@@ -39,36 +43,48 @@ router.use('/auth', _auth2.default);
 
 /** GET /health-check - Check service health */
 router.get('/health-check', function (req, res) {
-  return res.send('OK');
+    return res.send('OK');
 });
 
 router.use('*', function (req, res, next) {
 
-  // check header or url parameters or post parameters for token
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    // check header or url parameters or post parameters for token
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-  // decode token
-  if (token) {
+    // decode token
+    if (token) {
 
-    // verifies secret and checks exp
-    _jsonwebtoken2.default.verify(token, config.jwtSecret, function (err, decoded) {
-      if (err) {
-        return res.json({ result: 1, token: token, data: 'Failed to authenticate token.' });
-      } else {
-        // if everything is good, save to request for use in other routes
-        req.decoded = decoded;
-        next();
-      }
-    });
-  } else {
+        // verifies secret and checks exp
+        _jsonwebtoken2.default.verify(token, config.jwtSecret, function (err, decoded) {
+            if (err) {
+                return res.json({
+                    result: 1,
+                    token: token,
+                    data: 'Failed to authenticate token.'
+                });
+            } else {
+                // if everything is good, save to request for use in other routes
+                req.decoded = decoded;
+                _user4.default.get(req.decoded.id).then(function (user) {
+                    req.current_user = user;
+                    next();
+                }).catch(function (err) {
+                    res.json({
+                        result: 1,
+                        data: "Invalid or expired token"
+                    });
+                });
+            }
+        });
+    } else {
 
-    // if there is no token
-    // return an error
-    return res.status(403).send({
-      success: false,
-      message: 'No token provided.'
-    });
-  }
+        // if there is no token
+        // return an error
+        return res.status(403).send({
+            success: false,
+            message: 'No token provided.'
+        });
+    }
 });
 
 // mount user routes at /users

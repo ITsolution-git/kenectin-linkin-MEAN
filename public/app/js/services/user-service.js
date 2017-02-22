@@ -25,6 +25,32 @@ app.service('user', ['$http', '$window','GlobalConstants', 'auth', '$q', functio
                 }
             });
     };
+
+    service.likePost = function(post_id) {
+        return $http.post(GlobalConstants.APIBASEPATH + 'api/user/likePost', {
+            post_id: post_id,
+        })
+        .then(function(response) {
+            if (response.data.result === 0) {
+                return response.data.data;
+            } else {
+                throw response.data;
+            }
+        });
+    };
+
+    service.dislikePost = function(post_id) {
+        return $http.post(GlobalConstants.APIBASEPATH + 'api/user/dislikePost', {
+            post_id: post_id,
+        })
+        .then(function(response) {
+            if (response.data.result === 0) {
+                return response.data.data;
+            } else {
+                throw response.data;
+            }
+        });
+    };
     service.getPosts = function(id) {
         return $http.get(GlobalConstants.APIBASEPATH + 'api/user/' + id + '/getPosts')
             .then(function(response) {

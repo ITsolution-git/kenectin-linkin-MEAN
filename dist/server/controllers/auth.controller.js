@@ -32,7 +32,6 @@ var config = require('../../config/env');
  * @returns {*}
  */
 function login(req, res, next) {
-    console.log(req.body);
     _user2.default.find({
         'email': req.body.email
     }).then(function (users) {
@@ -40,8 +39,7 @@ function login(req, res, next) {
             var user = users[0];
             if (user.password == req.body.password) {
                 var token = _jsonwebtoken2.default.sign({
-                    username: user.username,
-                    email: user.email
+                    id: user._id
                 }, config.jwtSecret, {
                     expiresIn: 60 * 60 * 24 * 30
                 });

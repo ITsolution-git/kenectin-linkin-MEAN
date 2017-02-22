@@ -14,7 +14,6 @@ const config = require('../../config/env');
  * @returns {*}
  */
 function login(req, res, next) {
-  console.log(req.body);
     User.find({
             'email': req.body.email
         })
@@ -23,8 +22,7 @@ function login(req, res, next) {
                 let user = users[0];
                 if (user.password == req.body.password) {
                     const token = jwt.sign({
-                        username: user.username,
-                        email: user.email
+                        id: user._id
                     }, config.jwtSecret, {
                         expiresIn: 60 * 60 * 24 * 30
                     });

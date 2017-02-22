@@ -60,4 +60,4 @@ var UserPostSchema = new _mongoose2.default.Schema({
  */
 exports.default = _mongoose2.default.model('UserPost', UserPostSchema);
 module.exports = exports['default'];
-//# sourceMappingURL=users_posts.js.map
+//# sourceMappingURL=users_posts.model.js.map
