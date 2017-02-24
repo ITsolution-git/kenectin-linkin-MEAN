@@ -118,9 +118,8 @@
                                     <div class="info-details">
                                         <ul class="list-unstyled list-inline">
                                             <li><a href="#" class="text-muted">{{post.createdAt | date}}</a></li>
-                                            <li><a href="#" class="text-muted"><i class="fa fa-comment"></i> 584</a></li>
-                                            <li><a href="#" class="text-muted"><i class="fa fa-heart"></i> 12k</a></li>
-                                            <li><a href="#" class="text-muted"><i class="fa fa-reply"></i> Reply</a></li>
+                                            <li><a href="#" class="text-muted"><i class="fa fa-comment"></i> {{post.comments.length}}</a></li>
+                                            <li><a href="#" class="text-muted" ><i class="fa fa-chain" ></i>{{post.likeUsers.length}} </a></li>
                                         </ul>
                                     </div>
 

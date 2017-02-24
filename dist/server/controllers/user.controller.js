@@ -230,6 +230,12 @@ function getPosts(req, res, next) {
 		userId: user._id
 	}).sort({
 		createdAt: -1
+	}).populate('userId').populate({
+		path: 'comments',
+		// Get friends of friends - populate the 'friends' array for every friend
+		populate: {
+			path: 'author'
+		}
 	}).exec().then(function (posts) {
 		console.log(posts);
 		res.json({
